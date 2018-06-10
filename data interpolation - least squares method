@@ -1,0 +1,29 @@
+%find the coefficients of the approximating function given the order
+
+function a=cominq(x,y,n)
+%x vector pf data xi, y vector of data yi, n order of intarpolating polynomial
+%solve linear system A*a(vector of coefficients)=b
+for k=1:n+1
+    for j=1:n+1
+        A(k,j)=sum(x.^(k+j-2));
+    end
+end
+for k=1:n+1
+    b(k)=sum((x.^(k-1)).*y);
+end
+b=b';
+a=(A\b)';
+
+%evaluate y(x) given the coefficients (coming from function cominq(x,y,n)
+
+function yfit=fitleastsquares(a,x)
+%a vector of coefficients, x data vector xi
+n=length(a); %polynomial order + 1
+N=length(x); %numer of data
+%evaluate for each xi yfit=a'*xx where xx=[1 x x^2 ...]
+for i=1:N
+    for k=1:n 
+        xx(k)=x(i)^(k-1);
+    end
+    yfit(i)=a*xx';
+end
